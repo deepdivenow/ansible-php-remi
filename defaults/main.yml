@@ -1,0 +1,37 @@
+---
+# defaults file for ansible-php-remi
+php_version: 72
+php_packages:
+- "php{{ php_version }}"
+- "php{{ php_version }}-php-common"
+- "php{{ php_version }}-php-json"
+- "php{{ php_version }}-php-pgsql"
+- "php{{ php_version }}-php-mbstring"
+- "php{{ php_version }}-php-xml"
+- "php{{ php_version }}-runtime"
+- "php{{ php_version }}-php-pdo"
+- "php{{ php_version }}-php-cli"
+- "php{{ php_version }}-php-fpm"
+
+php_fpm_pools:
+  www:
+    user: apache
+    group: apache
+    listen:
+      address: '127.0.0.1:9000'
+      allowed_clients: '127.0.0.1'
+    pm:
+      type: dynamic
+      max_children: 50
+      start_servers: 5
+      min_spare_servers: 5
+      max_spare_servers: 35
+    slowlog: /var/opt/remi/php72/log/php-fpm/www-slow.log
+    php_admin_value:
+      error_log: /var/opt/remi/php72/log/php-fpm/www-error.log
+    php_admin_flag:
+      log_errors: 'on'
+    php_value:
+      'session.save_handler': files
+      'session.save_path': /var/opt/remi/php72/lib/php/session
+      'soap.wsdl_cache_dir': /var/opt/remi/php72/lib/php/wsdlcache
